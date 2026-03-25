@@ -1,0 +1,33 @@
+机器狗中需要启动很多进程，启动很多节点，手动一个个启动很麻烦，想写一个脚本，一键启动
+
+窗口1：重启机器狗slam（坐标系、/odometry、/lidar_points）
+先source /app/script/env.sh
+再执行systemctl restart vita_slam
+
+
+窗口2：发布路径（/path）
+先source /app/script/env.sh
+再执行python3 /app/egoplanner_heng_dog/pct_path_7m/pct_path_publisher_0_to_7m.py
+
+
+窗口3：启动局部路径规划算法（/local_path）
+先source /app/script/env.sh
+再source /app/egoplanner_heng_dog/install4/setup.bash
+再chmod 777 /app/egoplanner_heng_dog/install4/dog_ego_planner/lib/dog_ego_planner/dog_planner_node
+再ros2 launch dog_ego_planner robot_launch.py
+
+
+窗口4：启动foxglove_bridge（观察）
+先source /app/script/env.sh
+再ros2 run foxglove_bridge foxglove_bridge
+打印”已经启动foxglove_bridge“
+
+窗口5：启动控制器（机器狗运动起来）
+先source /app/script/env.sh，
+然后执行python3 /app/egoplanner_heng_dog/0.0dogmove/vbot_path_follower.py
+
+
+
+
+
+
