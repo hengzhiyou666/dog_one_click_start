@@ -1,0 +1,46 @@
+机器狗中需要启动很多进程，启动很多节点，手动一个个启动很麻烦，想写一个脚本，一键启动
+
+第一个进程：发布路径
+打印”开始发布路径“
+先source /app/script/env.sh
+再执行python3 /app/egoplanner_heng_dog/pct_path_7m/pct_path_publisher_0_to_7m.py
+理论上就已经在发布路径了
+打印“已开始循环发布路径...”
+等待3秒
+
+
+第二个进程：重启机器狗slam
+打印“开始重启slam”
+先source /app/script/env.sh
+再执行systemctl restart vita_slam
+等待完成后，打印“完成slam重启”
+等待3秒
+
+
+第3个进程：启动局部路径规划算法
+打印”开始启动局部路径规划算法“
+先source /app/script/env.sh
+再source /app/egoplanner_heng_dog/install4/setup.bash
+再chmod 777 /app/egoplanner_heng_dog/install4/dog_ego_planner/lib/dog_ego_planner/dog_planner_node
+再ros2 launch dog_ego_planner robot_launch.py
+打印”已经启动局部路径规划算法“
+
+启动第4个进程
+打印”开始启动foxglove_bridge“
+先source /app/script/env.sh
+再ros2 run foxglove_bridge foxglove_bridge
+打印”已经启动foxglove_bridge“
+然后实时监控这个进程是否有问题，是否一直在报错（连续3s），如果有报错，就关闭该进程，重新启动该进程
+
+启动第5个进程
+打印“开始启动控制器”
+先source /app/script/env.sh，然后执行python3 vbot_path_follower.py，
+然后终端显示“机器狗控制器已启动，是否暂停？__”
+当按下空格键或者enter按键时，关闭python3 vbot_path_follower.py进程，
+并打印“控制器已经暂停，是否需要再次启动控制器？__”当按下空格键或者enter按键时，
+先source /app/script/env.sh，然后执行python3 vbot_path_follower.py
+
+
+
+
+
